@@ -3,7 +3,7 @@ public class Bonde extends Brik {
     public Bonde(char forkortelse, boolean erSort) {
         super(forkortelse, erSort);
     }
-
+/*
     Felt startfelt;// = new Felt(6,0);
 
     //TRAEK FOR HVIDE
@@ -39,7 +39,7 @@ public class Bonde extends Brik {
 
     Traek[] muligeTraekUdenAtSlaaSorte = {traek5, traek6};
     Traek[] muligeTraekOgSlaaSorte = {traek7, traek8};
-
+*/
 
 
 
