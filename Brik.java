@@ -1,14 +1,16 @@
-public class Brik {
+public abstract class Brik {
+    Felt felt;
     char forkortelse;
     boolean erSort;
-    boolean erLevende;
+    boolean erLevende = true;
 
     public Brik() {
     }
 
-    public Brik(char forkortelse, boolean erSort) {
+    public Brik(char forkortelse, boolean erSort, Felt felt) {
         this.forkortelse = forkortelse;
         this.erSort = erSort;
+        this.felt = felt;
     }
 
     public char getForkortelse() { return forkortelse; }

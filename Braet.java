@@ -16,10 +16,10 @@ public class Braet {
 
     public void startOpstillingBonde() {
         for (int i = 0; i < 8; i++) {
-            braetMedBrikker[1][i] = new Bonde('B', true);
+            braetMedBrikker[1][i] = new Bonde('B', true, new Felt(1,i));
         }
         for (int i = 0; i < 8; i++) {
-            braetMedBrikker[6][i] = new Bonde('B',false);
+            braetMedBrikker[6][i] = new Bonde('B',false, new Felt(6,i));
         }
     }
 
@@ -32,33 +32,33 @@ public class Braet {
     }
 
     public void startOpstillingTaarn() {
-        braetMedBrikker[0][0] = new Taarn('T',true);
-        braetMedBrikker[7][0] = new Taarn('T',false);
-        braetMedBrikker[0][7] = new Taarn('T',true);
-        braetMedBrikker[7][7] = new Taarn('T',false);
+        braetMedBrikker[0][0] = new Taarn('T',true, new Felt(0,0));
+        braetMedBrikker[7][0] = new Taarn('T',false, new Felt(7,0));
+        braetMedBrikker[0][7] = new Taarn('T',true, new Felt(0,7));
+        braetMedBrikker[7][7] = new Taarn('T',false, new Felt(7,7));
     }
 
     public void startOpstillingSpringer() {
-        braetMedBrikker[0][1] = new Springer('S',true);
-        braetMedBrikker[7][1] = new Springer('S',false);
-        braetMedBrikker[0][6] = new Springer('S',true);
-        braetMedBrikker[7][6] = new Springer('S',false);
+        braetMedBrikker[0][1] = new Springer('S',true, new Felt(0,1));
+        braetMedBrikker[7][1] = new Springer('S',false, new Felt(7,1));
+        braetMedBrikker[0][6] = new Springer('S',true, new Felt(0,6));
+        braetMedBrikker[7][6] = new Springer('S',false, new Felt(7, 6));
     }
 
     public void startOpstillingLoeber() {
-        braetMedBrikker[0][2] = new Loeber('L',true);
-        braetMedBrikker[7][2] = new Loeber('L',false);
-        braetMedBrikker[0][5] = new Loeber('L',true);
-        braetMedBrikker[7][5] = new Loeber('L',false);
+        braetMedBrikker[0][2] = new Loeber('L',true, new Felt(0,2));
+        braetMedBrikker[7][2] = new Loeber('L',false, new Felt(7,2));
+        braetMedBrikker[0][5] = new Loeber('L',true, new Felt(0,5));
+        braetMedBrikker[7][5] = new Loeber('L',false, new Felt(7,5));
     }
 
     public void startOpstillingDronning() {
-        braetMedBrikker[0][4] = new Dronning('D',true);
-        braetMedBrikker[7][4] = new Dronning('D',false);
+        braetMedBrikker[0][4] = new Dronning('D',true, new Felt(0,4));
+        braetMedBrikker[7][4] = new Dronning('D',false, new Felt(7,4));
     }
     public void startOpstillingKonge() {
-        braetMedBrikker[0][3] = new Konge('K',true);
-        braetMedBrikker[7][3] = new Konge('K',false);
+        braetMedBrikker[0][3] = new Konge('K',true, new Felt(0,3));
+        braetMedBrikker[7][3] = new Konge('K',false, new Felt(7,3));
     }
 
     public void printBraet(){

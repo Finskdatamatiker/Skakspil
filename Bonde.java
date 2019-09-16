@@ -1,14 +1,14 @@
 public class Bonde extends Brik {
 
-    public Bonde(char forkortelse, boolean erSort) {
-        super(forkortelse, erSort);
+    public Bonde(char forkortelse, boolean erSort, Felt felt) {
+        super(forkortelse, erSort, felt);
     }
-/*
+
     Felt startfelt;// = new Felt(6,0);
 
     //TRAEK FOR HVIDE
     //rykker 1 frem
-    Felt slutfelt1 = new Felt(startfelt.getX()-1, startfelt.getY());
+    /*Felt slutfelt1 = new Felt(startfelt.getX()-1, startfelt.getY());
     Traek traek1 = new Traek(startfelt,slutfelt1,false, false);
     //rykker 2 frem
     Felt slutfelt2 = new Felt(startfelt.getX()-2, startfelt.getY());
@@ -38,8 +38,8 @@ public class Bonde extends Brik {
     Traek traek8 = new Traek(startfelt,slutfelt8,false,false);
 
     Traek[] muligeTraekUdenAtSlaaSorte = {traek5, traek6};
-    Traek[] muligeTraekOgSlaaSorte = {traek7, traek8};
-*/
+    Traek[] muligeTraekOgSlaaSorte = {traek7, traek8};*/
+
 
 
 

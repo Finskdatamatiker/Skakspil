@@ -7,5 +7,6 @@ public class SkakSystem {
         braet.startOpstilling();
         braet.printBraet();
         braet.printForkortelser();
+
     }
 }
