@@ -1,4 +1,4 @@
-public abstract class Brik {
+public class Brik {
     Felt felt;
     char forkortelse;
     boolean erSort;
@@ -17,6 +17,21 @@ public abstract class Brik {
     public void setForkortelse(char forkortelse) { this.forkortelse = forkortelse; }
     public boolean isErSort() { return erSort; }
     public void setErSort(boolean erSort) { this.erSort = erSort;}
+    public Felt getFelt() {
+        return felt;
+    }
+
+    public void setFelt(Felt felt) {
+        this.felt = felt;
+    }
+
+    public boolean isErLevende() {
+        return erLevende;
+    }
+
+    public void setErLevende(boolean erLevende) {
+        this.erLevende = erLevende;
+    }
 
     public String toString() {
         String besked = "";

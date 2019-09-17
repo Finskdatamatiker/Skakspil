@@ -4,7 +4,11 @@ public class Braet {
     private Brik[][] braetMedBrikker = new Brik[8][8];
     public Braet() { }
 
-   public void startOpstilling(){
+    public Brik[][] getBraetMedBrikker() {
+        return braetMedBrikker;
+    }
+
+    public void startOpstilling(){
         startOpstillingBonde();
         startOpstillingTomme();
         startOpstillingTaarn();
