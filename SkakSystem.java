@@ -5,6 +5,9 @@
 public class SkakSystem {
 
     public static void main(String[] args) {
+        /**
+        * Der mangler stadig menu, hvor man kan spoerge spilleren, hvordan hun/han vil traekke. 
+        */
 
         Braet braet = new Braet();
         braet.printBraet();
