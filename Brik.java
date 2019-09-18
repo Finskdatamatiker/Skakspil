@@ -1,8 +1,12 @@
+/**
+ * @author Paivi
+ * @since 18.9.19
+ */
 public class Brik {
-    Felt felt;
-    char forkortelse;
-    boolean erSort;
-    boolean erLevende = true;
+    private Felt felt;
+    private char forkortelse;
+    private boolean erSort;
+    private boolean erLevende = true;
 
     public Brik() {
     }
@@ -20,15 +24,12 @@ public class Brik {
     public Felt getFelt() {
         return felt;
     }
-
     public void setFelt(Felt felt) {
         this.felt = felt;
     }
-
     public boolean isErLevende() {
         return erLevende;
     }
-
     public void setErLevende(boolean erLevende) {
         this.erLevende = erLevende;
     }

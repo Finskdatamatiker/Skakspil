@@ -1,11 +1,18 @@
-
+/**
+ * @author Paivi
+ * @since 18.9.19
+ */
 public class Braet {
 
     private Brik[][] braetMedBrikker = new Brik[8][8];
-    public Braet() { }
+    public Braet() { this.startOpstilling();}
 
     public Brik[][] getBraetMedBrikker() {
         return braetMedBrikker;
+    }
+
+    public void setBraetMedBrikker(Brik[][] braetMedBrikker) {
+        this.braetMedBrikker = braetMedBrikker;
     }
 
     public void startOpstilling(){
@@ -30,10 +37,11 @@ public class Braet {
     public void startOpstillingTomme() {
         for (int i = 2; i < 6; i++) {
             for (int j = 0; j < 8; j++) {
-                braetMedBrikker[i][j] = new Tom();
+                braetMedBrikker[i][j] = new Tom(' ', false, new Felt(i, j));
             }
         }
-    }
+      }
+
 
     public void startOpstillingTaarn() {
         braetMedBrikker[0][0] = new Taarn('T',true, new Felt(0,0));
@@ -61,16 +69,17 @@ public class Braet {
         braetMedBrikker[7][4] = new Dronning('D',false, new Felt(7,4));
     }
     public void startOpstillingKonge() {
-        braetMedBrikker[0][3] = new Konge('K',true, new Felt(0,3));
-        braetMedBrikker[7][3] = new Konge('K',false, new Felt(7,3));
+        this.braetMedBrikker[0][3] = new Konge('K',true, new Felt(0,3));
+        this.braetMedBrikker[7][3] = new Konge('K',false, new Felt(7,3));
     }
+
 
     public void printBraet(){
         for (int i = 0; i < braetMedBrikker.length; i++) {
             for (int j = 0; j < braetMedBrikker[i].length; j++) {
                 System.out.print(braetMedBrikker[i][j] + "\t|\t");
             }
-            System.out.println("\n______________________________________________________________________________________________");
+            System.out.println("\n__________________________________________________________________________________________________");
         }
     }
     public void printForkortelser(){

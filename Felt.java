@@ -1,7 +1,10 @@
+/**
+ * @author Paivi
+ * @since 18.9.19
+ */
 public class Felt {
     private int x;
     private int y;
-    //boolean erTom; - dette kan erstattes med at tjekke, om feltet er instance af Tom
 
     public Felt(int x, int y) {
         this.x = x;
