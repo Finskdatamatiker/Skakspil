@@ -4,8 +4,9 @@
  */
 public class ReglerHandler {
     /**
-     * Der mangler reglen om, at det kun er foerste omgang, at bonden kan tage 2 skridt.
-     * Nu kan bondentage 1 eller 2 skrift og den kan slaa.
+     * Glemte reglen, om at det kun er 1. omgang, at bonden kan tage 2 skridt.
+     * Nu kan bonden tage 1 eller 2 skrift, slaa og blive til dronning til sidst.
+     * Tanken er, at man kan genbruge reglerne med modifikationer med de andre brikker.  
      */
 
     private Brik[][] braetMedBrikker;
