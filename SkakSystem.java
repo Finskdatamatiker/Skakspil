@@ -5,9 +5,6 @@
 public class SkakSystem {
 
     public static void main(String[] args) {
-        /**
-        * Der mangler stadig menu, hvor man kan spoerge spilleren, hvordan hun/han vil traekke. 
-        */
 
         Braet braet = new Braet();
         braet.printBraet();
@@ -45,9 +42,9 @@ public class SkakSystem {
         brikPaaSlutfelt = braet.getBraetMedBrikker()[5][2];
         System.out.println("Brikken som skal rykkes " + brik.getFelt().getX() + "," + brik.getFelt().getY() + " | " + brik.toString());
         System.out.println("Muligt at gaa? " + reglerHandler.muligtGaaFremUdenAtSlaaBonde(slutfelt, brik));
-        System.out.println("Muligt at slaa?  " + reglerHandler.muligtAtSlaaBonde(slutfelt,brik));
+        System.out.println("Muligt at slaa?  " + reglerHandler.muligtAtSlaaBonde(slutfelt,brikPaaSlutfelt));
         reglerHandler.bytToBrikker(braet.getBraetMedBrikker(),brik, brikPaaSlutfelt);
-        System.out.println("\nVi slaar\n");
+        System.out.println("\nVi gaar\n");
         braet.printBraet();
 
         System.out.println("\nOmgang 4\n");
@@ -81,6 +78,7 @@ public class SkakSystem {
 
         System.out.println("\nVi slaar\n");
         braet.printBraet();
+
 
     }
 }

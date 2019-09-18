@@ -4,9 +4,8 @@
  */
 public class ReglerHandler {
     /**
-     * Glemte reglen, om at det kun er 1. omgang, at bonden kan tage 2 skridt.
-     * Nu kan bonden tage 1 eller 2 skrift, slaa og blive til dronning til sidst.
-     * Tanken er, at man kan genbruge reglerne med modifikationer med de andre brikker.  
+     * Der mangler reglen om, at det kun er foerste omgang, at bonden kan tage 2 skridt.
+     * Nu kan bondentage 1 eller 2 skrift og den kan slaa.
      */
 
     private Brik[][] braetMedBrikker;
@@ -17,65 +16,65 @@ public class ReglerHandler {
 
     /**
      * Er det muligt at gaa 1 eller 2 felter frem uden at slaa nogen?
-     * Tjek: er det en Bonde?
+     * Foerst gemmes felter frem til slutfeltet i to arrays. Den ene for de sorte, den anden for de hvide.
+     * Det er for at kunne genbruge metoden kun med smaa justeringer, naar fx taarn skal rykke frem og der er
+     * flere felter på vejen til slutfeltet. Dem kan vi loope i denne samme metode.
      * Slutfelt inde i braettet?
-     * Hvis brikken er sort: forskellen på x skal vaere 1 eller 2
-     * Hvis brikken er hvid: forskellen på x skal vaere -1 eller -2
-     * Er feltet paa ruten tom?
+     * max 2 skridt frem
+     * Hvis brikken er sort: vi tjekker om felterne er tomme frem til slutfeltet
+     * Hvis brikken er hvid: vi tjekker det samme
      * @param slutfelt feltet hvor brikken vil gaa
      * @param brik
      * @return om det er muligt at gaa
      */
-    public boolean muligtGaaFremUdenAtSlaaBonde(Felt slutfelt, Brik brik) {
-        if (brik instanceof Bonde) {
-            Felt iVejenForSort = new Felt(brik.getFelt().getX() + 1, brik.getFelt().getY());
-            Felt iVejenForHvid = new Felt(brik.getFelt().getX() - 1, brik.getFelt().getY());
-            int forskelX = slutfelt.getX() - brik.getFelt().getX();
-
-            if (slutfelt.getX() > 0 & slutfelt.getX() < 8) {
-                if (brik.isErSort()) {
-                    if (forskelX > 0 && forskelX < 3) {
-                        if (erFeltetTomt(iVejenForSort)) return true;
-                    } }
-                else if (!brik.isErSort()) {
-                    if ((forskelX < 0 && forskelX > -3)) {
-                        if (erFeltetTomt(iVejenForHvid)) return true;
+        public boolean muligtGaaFremUdenAtSlaaBonde(Felt slutfelt, Brik brik) {
+            int antalFelterFrem = Math.abs(slutfelt.getX()-brik.getFelt().getX());
+            Felt[] felterIVejenForSort = new Felt[antalFelterFrem];
+            Felt[] felterIVejenForHvid = new Felt[antalFelterFrem];
+            for(int i = 0; i < antalFelterFrem; i++){
+                felterIVejenForSort[i] = new Felt(brik.getFelt().getX() + i+1, brik.getFelt().getY());
+            }
+            for(int i = 0; i < antalFelterFrem;i++){
+                felterIVejenForHvid[i] = new Felt(brik.getFelt().getX() + i-1, brik.getFelt().getY());
+            }
+            boolean svar = false;
+            if (slutfelt.getX() >= 0 & slutfelt.getX() < 8) {
+                if(antalFelterFrem < 3){
+                    if (brik.isErSort()) {
+                        for (int i = 0; i < felterIVejenForSort.length; i++) {
+                            if (erFeltetTomt(felterIVejenForSort[i])){
+                                svar = true;
+                            }
+                        }
+                     }
+                      if (!brik.isErSort()) {
+                        for (int i = 0; i<felterIVejenForHvid.length; i++) {
+                            if (erFeltetTomt(felterIVejenForHvid[i])) {
+                                svar = true;
+                            }
+                        }
                     } }
             }
-        }
-        return false;
+        return svar;
     }
 
-    /**
-     * Er det muligt at slaa?
-     * Tjek:er det en Bonde?
-     * Slutfelt inde i braettet?
-     * Hvis bonden sort: x maa vaere 1 stoerre, y maa vaere 1 mindre eller 1 stoerre (slaa skraadt)
-     * Er det en modstander, som staar på feltet? Metoden indeholder først tjek, om feltet er tomt. Ellers kan man ikke slaa.
-     * @param slutfelt feltet, hvor brikken vil gaa hen
-     * @return boolean, om det er mulidt at slaa
-     */
     public boolean muligtAtSlaaBonde(Felt slutfelt, Brik brik) {
-
-        if (brik instanceof Bonde) {
 
             int forskelX = slutfelt.getX() - brik.getFelt().getX();
             int forskelY = slutfelt.getY() - brik.getFelt().getY();
 
-            if (slutfelt.getX() > 0 & slutfelt.getX() < 8) {
+            if (slutfelt.getX() >= 0 & slutfelt.getX() < 8) {
                 if (brik.isErSort()) {
                     if (forskelX == 1 && (forskelY == -1 || forskelY == 1)) {
                         if (!this.staarDerSammeFarve(slutfelt, brik)) {
                             return true;
                         } } }
-                else if (!brik.isErSort()) {
+                    if (!brik.isErSort()) {
                     if (forskelX == -1 && (forskelY == -1 || forskelY == 1)) {
                         if (!this.staarDerSammeFarve(slutfelt, brik)) {
                             return true;
                         } } }
             }
-
-        }
         return false;
     }
 
@@ -138,6 +137,36 @@ public class ReglerHandler {
     public void lavBondeTilDronning(Brik[][] braetMedBrikker, Brik brik) {
             braetMedBrikker[brik.getFelt().getX()][brik.getFelt().getY()] = new Dronning('D', brik.isErSort(), new Felt(brik.getFelt().getX(), brik.getFelt().getY()));
         }
+
+         /*Den tidlige version for sikkerheds skyld
+        public boolean muligtGaaFremUdenAtSlaaBonde(Felt slutfelt, Brik brik) {
+        if (brik instanceof Bonde) {
+            Felt iVejenForSort = new Felt(brik.getFelt().getX() + 1, brik.getFelt().getY());
+            Felt iVejenForHvid = new Felt(brik.getFelt().getX() - 1, brik.getFelt().getY());
+            int forskelX = slutfelt.getX() - brik.getFelt().getX();
+
+            if (slutfelt.getX() > 0 & slutfelt.getX() < 8) {
+                if (brik.isErSort()) {
+                    if (forskelX > 0 && forskelX < 3) {
+                        if (erFeltetTomt(iVejenForSort)) return true;
+                    } }
+                else if (!brik.isErSort()) {
+                    if ((forskelX < 0 && forskelX > -3)) {
+                        if (erFeltetTomt(iVejenForHvid)) return true;
+                    } }
+            }
+        }
+        return false;
+    }*/
+
+    /**
+     * Er det muligt at slaa?
+     * Slutfelt inde i braettet?
+     * Hvis bonden sort: x maa vaere 1 stoerre, y maa vaere 1 mindre eller 1 stoerre (slaa skraadt)
+     * Er det en modstander, som staar på feltet? Metoden indeholder først tjek, om feltet er tomt. Ellers kan man ikke slaa.
+     * @param slutfelt feltet, hvor brikken vil gaa hen
+     * @return boolean, om det er mulidt at slaa
+     */
     }
 
 
