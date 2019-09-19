@@ -33,8 +33,6 @@ public class ReglerHandler {
             Felt[] felterIVejenForHvid = new Felt[antalFelterFrem];
             for(int i = 0; i < antalFelterFrem; i++){
                 felterIVejenForSort[i] = new Felt(brik.getFelt().getX() + i+1, brik.getFelt().getY());
-            }
-            for(int i = 0; i < antalFelterFrem;i++){
                 felterIVejenForHvid[i] = new Felt(brik.getFelt().getX() + i-1, brik.getFelt().getY());
             }
             boolean svar = false;
@@ -159,6 +157,14 @@ public class ReglerHandler {
         return false;
     }*/
 
+    /**
+     * Er det muligt at slaa?
+     * Slutfelt inde i braettet?
+     * Hvis bonden sort: x maa vaere 1 stoerre, y maa vaere 1 mindre eller 1 stoerre (slaa skraadt)
+     * Er det en modstander, som staar på feltet? Metoden indeholder først tjek, om feltet er tomt. Ellers kan man ikke slaa.
+     * @param slutfelt feltet, hvor brikken vil gaa hen
+     * @return boolean, om det er mulidt at slaa
+     */
     }
 
 
