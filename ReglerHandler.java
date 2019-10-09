@@ -1,12 +1,10 @@
+import java.util.Arrays;
+
 /**
  * @author Paivi
  * @since 18.9.19
  */
 public class ReglerHandler {
-    /**
-     * Der mangler reglen om, at det kun er foerste omgang, at bonden kan tage 2 skridt.
-     * Nu kan bondentage 1 eller 2 skrift og den kan slaa.
-     */
 
     private Brik[][] braetMedBrikker;
 
@@ -14,65 +12,60 @@ public class ReglerHandler {
         this.braetMedBrikker = braetMedBrikker;
     }
 
-    /**
-     * Er det muligt at gaa 1 eller 2 felter frem uden at slaa nogen?
-     * Foerst gemmes felter frem til slutfeltet i to arrays. Den ene for de sorte, den anden for de hvide.
-     * Det er for at kunne genbruge metoden kun med smaa justeringer, naar fx taarn skal rykke frem og der er
-     * flere felter på vejen til slutfeltet. Dem kan vi loope i denne samme metode.
-     * Slutfelt inde i braettet?
-     * max 2 skridt frem
-     * Hvis brikken er sort: vi tjekker om felterne er tomme frem til slutfeltet
-     * Hvis brikken er hvid: vi tjekker det samme
-     * @param slutfelt feltet hvor brikken vil gaa
-     * @param brik
-     * @return om det er muligt at gaa
-     */
-        public boolean muligtGaaFremUdenAtSlaaBonde(Felt slutfelt, Brik brik) {
-            int antalFelterFrem = Math.abs(slutfelt.getX()-brik.getFelt().getX());
-            Felt[] felterIVejenForSort = new Felt[antalFelterFrem];
-            Felt[] felterIVejenForHvid = new Felt[antalFelterFrem];
-            for(int i = 0; i < antalFelterFrem; i++){
-                felterIVejenForSort[i] = new Felt(brik.getFelt().getX() + i+1, brik.getFelt().getY());
-                felterIVejenForHvid[i] = new Felt(brik.getFelt().getX() + i-1, brik.getFelt().getY());
+    //tjekker, om slutfeltet og felterne frem til slutfeltet, er tomme, sådan at brikken kan gå frem til slutfeltet
+    public boolean erMuligtAtGaa(Felt slutfelt, Brik brik) {
+        Felt[] felterSomSkalTjekkes = hvilkeFelterTjekkesNaarGaar(slutfelt, brik);
+        boolean svar = false;
+        if(slutfelt.getX() <= brik.getFelt().getX()+felterSomSkalTjekkes.length && slutfelt.getY() == brik.getFelt().getY()){
+        for (int i = 0; i < felterSomSkalTjekkes.length; i++) {
+          if (erFeltetTomt(felterSomSkalTjekkes[i])){
+              svar = true;
+             }
+          if (!erFeltetTomt(felterSomSkalTjekkes[i])){
+              svar = false;
             }
-            boolean svar = false;
-            if (slutfelt.getX() >= 0 & slutfelt.getX() < 8) {
-                if(antalFelterFrem < 3){
-                    if (brik.isErSort()) {
-                        for (int i = 0; i < felterIVejenForSort.length; i++) {
-                            if (erFeltetTomt(felterIVejenForSort[i])){
-                                svar = true;
-                            }
-                        }
-                     }
-                      if (!brik.isErSort()) {
-                        for (int i = 0; i<felterIVejenForHvid.length; i++) {
-                            if (erFeltetTomt(felterIVejenForHvid[i])) {
-                                svar = true;
-                            }
-                        }
-                    } }
-            }
+         }
+        }
         return svar;
     }
 
-    public boolean muligtAtSlaaBonde(Felt slutfelt, Brik brik) {
+    //Returnerer de felter, som skal tjekkes, når brikken går frem, gemt i et array
+    public Felt[] hvilkeFelterTjekkesNaarGaar(Felt slutfelt, Brik brik) {
+        if (slutfelt.getX() >= 0 & slutfelt.getX() < 8) {
+            int antalTilladteFelter = brik.getAntalTilladteFelterFrem();
 
-            int forskelX = slutfelt.getX() - brik.getFelt().getX();
-            int forskelY = slutfelt.getY() - brik.getFelt().getY();
+            Felt[] felterTjekkesSort = new Felt[antalTilladteFelter];
+            Felt[] felterTjekkesHvid = new Felt[antalTilladteFelter];
 
-            if (slutfelt.getX() >= 0 & slutfelt.getX() < 8) {
-                if (brik.isErSort()) {
-                    if (forskelX == 1 && (forskelY == -1 || forskelY == 1)) {
-                        if (!this.staarDerSammeFarve(slutfelt, brik)) {
-                            return true;
-                        } } }
-                    if (!brik.isErSort()) {
-                    if (forskelX == -1 && (forskelY == -1 || forskelY == 1)) {
-                        if (!this.staarDerSammeFarve(slutfelt, brik)) {
-                            return true;
-                        } } }
+            for (int i = 0; i < antalTilladteFelter; i++) {
+                felterTjekkesSort[i] = new Felt(brik.getFelt().getX() + i + 1, brik.getFelt().getY());
+                felterTjekkesHvid[i] = new Felt(brik.getFelt().getX() - i - 1, brik.getFelt().getY());
             }
+            if (brik.isErSort()) {
+                return felterTjekkesSort;
+            }
+          return felterTjekkesHvid;
+        }
+        return null;
+    }
+
+    //tjekker, om der står en brik på det felt, som bonden vil slå og om brikken er modstander
+    public boolean erMuligtAtSlaaBonde(Felt slutfelt, Brik brik) {
+        int forskelX = slutfelt.getX() - brik.getFelt().getX();
+        int forskelY = slutfelt.getY() - brik.getFelt().getY();
+
+        if (slutfelt.getX() >= 0 & slutfelt.getX() < 8) {
+            if (brik.isErSort()) {
+                if (forskelX == 1 && (forskelY == -1 || forskelY == 1)) {
+                    if (!this.staarDerSammeFarve(slutfelt, brik) && !this.erFeltetTomt(slutfelt)) {
+                        return true;
+                    } } }
+            if (!brik.isErSort()) {
+                if (forskelX == -1 && (forskelY == -1 || forskelY == 1)) {
+                    if (!this.staarDerSammeFarve(slutfelt, brik) && !this.erFeltetTomt(slutfelt)) {
+                        return true;
+                    } } }
+        }
         return false;
     }
 
@@ -82,8 +75,7 @@ public class ReglerHandler {
         return false;
     }
 
-    //staar der modstander på slutfeltet? Forudsaetter foerst test, om feltet er tomt
-    //slutfelt = der, hvor modstander staar
+    //Tester, om der står en modstander, når man vil slå
     public boolean staarDerSammeFarve(Felt slutfelt, Brik brik) {
         if (!this.erFeltetTomt(slutfelt)) {
             boolean erModstanderSort = braetMedBrikker[slutfelt.getX()][slutfelt.getY()].isErSort();
@@ -92,25 +84,22 @@ public class ReglerHandler {
         return false;
     }
 
-    /**
+    /*
      * Brikkers x og y skal byttes om.
      * Men vi skal også bytte deres pladser i todimensionel array.
      * Den ene brik skal gemmes i en midlertidig beholder, mens man bytter.
-     * @param braetMedBrikker
-     * @param brik1
-     * @param brik2
      */
-    public void bytToBrikker(Brik[][] braetMedBrikker, Brik brik1, Brik brik2) {
+    public void bytToBrikker(Brik[][] braetMedBrikker, Brik brik1, Brik slutfeltBrik) {
 
             int x = brik1.getFelt().getX();
             int y = brik1.getFelt().getY();
-            int x2 = brik2.getFelt().getX();
-            int y2 = brik2.getFelt().getY();
+            int x2 = slutfeltBrik.getFelt().getX();
+            int y2 = slutfeltBrik.getFelt().getY();
 
             brik1.getFelt().setX(x2);
             brik1.getFelt().setY(y2);
-            brik2.getFelt().setX(x);
-            brik2.getFelt().setY(y);
+            slutfeltBrik.getFelt().setX(x);
+            slutfeltBrik.getFelt().setY(y);
 
             Brik temp;
             temp = braetMedBrikker[x][y];
@@ -118,54 +107,18 @@ public class ReglerHandler {
             braetMedBrikker[x2][y2] = temp;
     }
 
-    /**
-     * Brikken laves til Tom, dvs. den doer
-     * @param braetMedBrikker
-     * @param brik
-     */
-    public void brikkenDoer(Brik[][] braetMedBrikker, Brik brik){
+    //Brikken laves til Tom, dvs. den doer
+    public void brikkenDoer(Brik[][] braetMedBrikker, Brik brik) {
         braetMedBrikker[brik.getFelt().getX()][brik.getFelt().getY()] = new Tom(' ', false, new Felt(brik.getFelt().getX(), brik.getFelt().getY()));
     }
 
-    /**
-     * Bonden laves til Dronning i samma farve
-     * @param braetMedBrikker
-     * @param brik
-     */
+    //Bonden laves til Dronning i samma farve
     public void lavBondeTilDronning(Brik[][] braetMedBrikker, Brik brik) {
+        if (braetMedBrikker[brik.getFelt().getX()][brik.getFelt().getY()] instanceof Bonde && (brik.getFelt().getX() == 7 || brik.getFelt().getX() == 0)) {
             braetMedBrikker[brik.getFelt().getX()][brik.getFelt().getY()] = new Dronning('D', brik.isErSort(), new Felt(brik.getFelt().getX(), brik.getFelt().getY()));
         }
-
-         /*Den tidlige version for sikkerheds skyld
-        public boolean muligtGaaFremUdenAtSlaaBonde(Felt slutfelt, Brik brik) {
-        if (brik instanceof Bonde) {
-            Felt iVejenForSort = new Felt(brik.getFelt().getX() + 1, brik.getFelt().getY());
-            Felt iVejenForHvid = new Felt(brik.getFelt().getX() - 1, brik.getFelt().getY());
-            int forskelX = slutfelt.getX() - brik.getFelt().getX();
-
-            if (slutfelt.getX() > 0 & slutfelt.getX() < 8) {
-                if (brik.isErSort()) {
-                    if (forskelX > 0 && forskelX < 3) {
-                        if (erFeltetTomt(iVejenForSort)) return true;
-                    } }
-                else if (!brik.isErSort()) {
-                    if ((forskelX < 0 && forskelX > -3)) {
-                        if (erFeltetTomt(iVejenForHvid)) return true;
-                    } }
-            }
-        }
-        return false;
-    }*/
-
-    /**
-     * Er det muligt at slaa?
-     * Slutfelt inde i braettet?
-     * Hvis bonden sort: x maa vaere 1 stoerre, y maa vaere 1 mindre eller 1 stoerre (slaa skraadt)
-     * Er det en modstander, som staar på feltet? Metoden indeholder først tjek, om feltet er tomt. Ellers kan man ikke slaa.
-     * @param slutfelt feltet, hvor brikken vil gaa hen
-     * @return boolean, om det er mulidt at slaa
-     */
     }
+}
 
 
 

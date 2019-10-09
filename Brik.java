@@ -7,6 +7,7 @@ public class Brik {
     private char forkortelse;
     private boolean erSort;
     private boolean erLevende = true;
+    private int antalTilladteFelterFrem;
 
     public Brik() {
     }
@@ -33,11 +34,13 @@ public class Brik {
     public void setErLevende(boolean erLevende) {
         this.erLevende = erLevende;
     }
+    public int getAntalTilladteFelterFrem() { return antalTilladteFelterFrem; }
+    public void setAntalTilladteFelterFrem(int antalTilladteFelterFrem) { this.antalTilladteFelterFrem = antalTilladteFelterFrem; }
 
     public String toString() {
         String besked = "";
-        if(erSort == true) besked = forkortelse + "-sort";
-        if(erSort == false) besked = forkortelse + "-hvid";
+        if(erSort) besked = forkortelse + "-sort";
+        if(!erSort) besked = forkortelse + "-hvid";
         return besked;
     }
 }

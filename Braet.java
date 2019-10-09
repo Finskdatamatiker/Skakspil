@@ -42,7 +42,6 @@ public class Braet {
         }
       }
 
-
     public void startOpstillingTaarn() {
         braetMedBrikker[0][0] = new Taarn('T',true, new Felt(0,0));
         braetMedBrikker[7][0] = new Taarn('T',false, new Felt(7,0));
@@ -73,13 +72,12 @@ public class Braet {
         this.braetMedBrikker[7][3] = new Konge('K',false, new Felt(7,3));
     }
 
-
     public void printBraet(){
         for (int i = 0; i < braetMedBrikker.length; i++) {
             for (int j = 0; j < braetMedBrikker[i].length; j++) {
-                System.out.print(braetMedBrikker[i][j] + "\t|\t");
+                System.out.print(braetMedBrikker[i][j] + "(" + i + "," + j + ")" + "\t|\t" );
             }
-            System.out.println("\n__________________________________________________________________________________________________");
+            System.out.println("\n______________________________________________________________________________________________________________________________");
         }
     }
     public void printForkortelser(){
@@ -89,6 +87,7 @@ public class Braet {
         forkortelse += "L = loeber\n";
         forkortelse += "K = konge\n";
         forkortelse += "D = dronning\n";
+        forkortelse += "x og y -koordinater i parentes\n";
         System.out.println(forkortelse);
     }
 }
